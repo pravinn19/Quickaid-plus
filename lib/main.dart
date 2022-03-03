@@ -19,7 +19,7 @@ class InitialScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Newaccount(),
+      home: Welcome(),
       title: appName,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

@@ -6,13 +6,56 @@ import 'package:quickaid/welcome.dart';
 
 import 'constants.dart';
 
-class Homescreen extends StatelessWidget {
+class Homescreen extends StatefulWidget {
+  @override
+  State<Homescreen> createState() => _HomescreenState();
+}
+
+class _HomescreenState extends State<Homescreen> {
+  Object? _value;
+
+  List _list = [];
+  List _filteredList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    List templist = [];
+    FirebaseFirestore.instance
+        .collection("Datum")
+        .orderBy('Server')
+        .snapshots()
+        .listen((event) {
+      event.docs.forEach((element) {
+        templist.add(element.data());
+      });
+
+      setState(() {
+        _list = templist;
+        _filteredList = templist;
+      });
+    });
+  }
+
+  void filterList(value) {
+    List tempList = [];
+    _list.forEach((element) {
+      if (element['Area'] == value) {
+        tempList.add(element);
+      }
+    });
+    setState(() {
+      _filteredList = tempList;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final _currentuser = FirebaseAuth.instance.currentUser!.email;
     final _currentname = FirebaseAuth.instance.currentUser!.displayName;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    print(_list[0]['Name']);
     return Scaffold(
       appBar: AppBar(
         title: Text("Request Feed"),
@@ -89,90 +132,119 @@ class Homescreen extends StatelessWidget {
                 ),
               ],
             ),
-            StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection("Datum")
-                  .orderBy('Server')
-                  .snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasError) {
-                  return Text('Something went wrong');
-                }
-
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Text("Loading");
-                }
-
-                return ListView(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  children:
-                      snapshot.data!.docs.map((DocumentSnapshot document) {
-                    // Map<String, dynamic> data =
-                    //     document.data()! as Map<String, dynamic>;
-                    Text("Request section");
-                    return Center(
-                      child: SingleChildScrollView(
-                        child: Stack(
+            Container(
+              child: DropdownButton(
+                onChanged: (value) => filterList(value),
+                items: [
+                  DropdownMenuItem(
+                    child: Text("Chennai"),
+                    value: "Chennai",
+                  ),
+                  DropdownMenuItem(
+                    child: Text("Puducherry"),
+                    value: "Puducherry",
+                  ),
+                  DropdownMenuItem(
+                    child: Text("Kancheepuram"),
+                    value: "Kancheepuram",
+                  ),
+                  DropdownMenuItem(
+                    child: Text("Vellore"),
+                    value: "Vellore",
+                  ),
+                  DropdownMenuItem(
+                    child: Text("Thiruvallur"),
+                    value: "Thiruvallur",
+                  ),
+                ],
+                dropdownColor: Colors.white,
+              ),
+            ),
+            ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: _filteredList.length,
+                itemBuilder: (context, index) {
+                  return Center(
+                      child: Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Container(
+                          height: height * 0.5,
+                          width: width * 0.85,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.deepOrangeAccent,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 70,
+                        left: 30,
+                        child: Column(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Container(
-                                height: height * 0.5,
-                                width: width * 0.85,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  color: Colors.deepOrangeAccent,
-                                ),
-                              ),
+                            Text(
+                              "Name :   " + _filteredList[index]['Name'],
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
                             ),
-                            Positioned(
-                              top: 70,
-                              left: 30,
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "Name :   " + document['Name'],
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  ),
-                                  SizedBox(height: 20),
-                                  Text(
-                                    "Number :   " + document['PNumber'],
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  ),
-                                  SizedBox(height: 20),
-                                  Text(
-                                    "Category :   " + document['Category'],
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  ),
-                                  SizedBox(height: 20),
-                                  Text(
-                                    "Requested item :   " + document['Item'],
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  ),
-                                  SizedBox(height: 20),
-                                  Text(
-                                    "Lending duration : " +
-                                        document['Duration'],
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  ),
-                                ],
-                              ),
+                            SizedBox(height: 20),
+                            Text(
+                              "Number :   " + _filteredList[index]['PNumber'],
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              "Category :   " +
+                                  _filteredList[index]['Category'],
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              "Requested item :   " +
+                                  _filteredList[index]['Item'],
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              "Lending duration : " +
+                                  _filteredList[index]['Duration'],
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
                             ),
                           ],
                         ),
                       ),
-                    );
-                  }).toList(),
-                );
-              },
-            )
+                    ],
+                  )
+
+// Text(
+                      //   _list[index]['Name'],
+                      //   style: TextStyle(
+                      //       fontWeight: FontWeight.bold, color: Colors.blue),
+                      // ),
+                      ); //
+                })
+            // ListView(
+            //         shrinkWrap: true,
+            //         physics: NeverScrollableScrollPhysics(),
+            //         children:
+            //             _list.map((DocumentSnapshot document) {
+            //           // Map<String, dynamic> data =
+            //           //     document.data()! as Map<String, dynamic>;
+            //           Text("Request section");
+            //           return Center(
+            //             child: SingleChildScrollView(
+            //               child:
+
+            //             ),
+            //           );
+            //         }).toList(),
+            //       )
           ],
         ),
       ),

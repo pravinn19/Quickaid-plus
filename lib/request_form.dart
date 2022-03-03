@@ -26,7 +26,7 @@ class _RequestformState extends State<Requestform> {
     if (_formkey.currentState!.validate()) {
       final taskName = _controllerName.text;
       final taskNumber = _controllerNumber.text;
-      final taskArea = _controllerArea.text;
+      final taskArea = _value;
       final taskCategory = _controllerCategory.text;
       final taskItem = _controllerItem.text;
       final taskDuration = _controllerDuration.text;
