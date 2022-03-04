@@ -17,6 +17,8 @@ class _HomescreenState extends State<Homescreen> {
   List _list = [];
   List _filteredList = [];
 
+  String? _selectedvalue;
+
   @override
   void initState() {
     super.initState();
@@ -97,10 +99,6 @@ class _HomescreenState extends State<Homescreen> {
             Divider(
               height: 0.1,
             ),
-            // ListTile(
-            //   title: Text('Maps'),
-            //   leading: Icon(Icons.map),
-            // ),
             Divider(
               height: 0.1,
             )
@@ -134,26 +132,51 @@ class _HomescreenState extends State<Homescreen> {
             ),
             Container(
               child: DropdownButton(
-                onChanged: (value) => filterList(value),
+                isExpanded: true,
+                hint: Text(
+                  "Choose your current Location",
+                  style: TextStyle(color: Colors.white),
+                  textAlign: TextAlign.justify,
+                ),
+                value: _selectedvalue,
+                onChanged: (value) {
+                  filterList(value);
+                  setState(() => this._selectedvalue = value as String);
+                },
                 items: [
                   DropdownMenuItem(
-                    child: Text("Chennai"),
+                    child: Text(
+                      "Chennai",
+                      style: TextStyle(color: Colors.deepOrangeAccent),
+                    ),
                     value: "Chennai",
                   ),
                   DropdownMenuItem(
-                    child: Text("Puducherry"),
+                    child: Text(
+                      "Puducherry",
+                      style: TextStyle(color: Colors.deepOrangeAccent),
+                    ),
                     value: "Puducherry",
                   ),
                   DropdownMenuItem(
-                    child: Text("Kancheepuram"),
+                    child: Text(
+                      "Kancheepuram",
+                      style: TextStyle(color: Colors.deepOrangeAccent),
+                    ),
                     value: "Kancheepuram",
                   ),
                   DropdownMenuItem(
-                    child: Text("Vellore"),
+                    child: Text(
+                      "Vellore",
+                      style: TextStyle(color: Colors.deepOrangeAccent),
+                    ),
                     value: "Vellore",
                   ),
                   DropdownMenuItem(
-                    child: Text("Thiruvallur"),
+                    child: Text(
+                      "Thiruvallur",
+                      style: TextStyle(color: Colors.deepOrangeAccent),
+                    ),
                     value: "Thiruvallur",
                   ),
                 ],
@@ -220,31 +243,8 @@ class _HomescreenState extends State<Homescreen> {
                         ),
                       ),
                     ],
-                  )
-
-// Text(
-                      //   _list[index]['Name'],
-                      //   style: TextStyle(
-                      //       fontWeight: FontWeight.bold, color: Colors.blue),
-                      // ),
-                      ); //
+                  ));
                 })
-            // ListView(
-            //         shrinkWrap: true,
-            //         physics: NeverScrollableScrollPhysics(),
-            //         children:
-            //             _list.map((DocumentSnapshot document) {
-            //           // Map<String, dynamic> data =
-            //           //     document.data()! as Map<String, dynamic>;
-            //           Text("Request section");
-            //           return Center(
-            //             child: SingleChildScrollView(
-            //               child:
-
-            //             ),
-            //           );
-            //         }).toList(),
-            //       )
           ],
         ),
       ),

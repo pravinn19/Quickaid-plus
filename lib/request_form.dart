@@ -118,9 +118,13 @@ class _RequestformState extends State<Requestform> {
       ),
       child: Theme(
         data: Theme.of(context).copyWith(
-          canvasColor: Colors.black,
+          canvasColor: Colors.deepOrange,
         ),
         child: DropdownButton<String>(
+          hint: Text(
+            'Choose your Area',
+            style: TextStyle(color: Colors.white),
+          ),
           value: _value,
           isExpanded: true,
           items: Area.map(buildMenuItem).toList(),

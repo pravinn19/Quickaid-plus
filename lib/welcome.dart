@@ -1,15 +1,32 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quickaid/forum_screen.dart';
+import 'package:quickaid/login_screen.dart';
 import 'package:quickaid/request_form.dart';
-
 import 'constants.dart';
 
 class Welcome extends StatelessWidget {
   @override
+  // final _signOut = () async {
+  //   await FirebaseAuth.instance.signOut();Navigator.push(
+  //       context, MaterialPageRoute(builder: (context) => LoginScreen()));
+  // };
+
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => LoginScreen()),
+          );
+        },
+        label: Text("Sign out"),
+        icon: Icon(Icons.logout),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),
@@ -48,7 +65,7 @@ class Welcome extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(30),
                   child: Container(
-                    height: height * 0.5,
+                    height: height * 0.4,
                     width: width * 0.85,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
@@ -57,7 +74,7 @@ class Welcome extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 140),
+                  padding: const EdgeInsets.only(top: 110),
                   child: Column(
                     children: [
                       Center(
@@ -117,7 +134,7 @@ class Welcome extends StatelessWidget {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ],

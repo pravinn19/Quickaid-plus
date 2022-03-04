@@ -184,31 +184,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: height * 0.08,
                     width: width * 0.85,
                     child: ElevatedButton(
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            formKey.currentState!.save();
-                            signIn(context);
-                            // if (_email == "pravin@g.com" &&
-                            //     _password == "root12345") {
-                            //   onTap:
-                            //   () => FocusScope.of(context).unfocus();
-                            //   Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //       builder: (context) => Homescreen(),
-                            //     ),
-                            //   );
-                            // } else {
-                            //   print("invalid login");
-                            // }
-                          }
-                        },
-                        child: Text("Login to Account"),
-                        style: ElevatedButton.styleFrom(
-                            fixedSize: Size(200, 50),
-                            primary: Colors.deepOrangeAccent,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50)))),
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          formKey.currentState!.save();
+                          signIn(context);
+                        }
+                      },
+                      child: Text("Login to Account"),
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size(200, 50),
+                        primary: Colors.deepOrangeAccent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 Row(

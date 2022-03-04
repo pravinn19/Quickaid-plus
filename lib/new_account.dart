@@ -157,6 +157,8 @@ class _NewaccountState extends State<Newaccount> {
                     } catch (e) {}
                     FirebaseAuth.instance.currentUser!
                         .updateDisplayName(_uname);
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()));
                   },
                   minWidth: 200.0,
                   height: 50.0,
